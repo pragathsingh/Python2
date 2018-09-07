@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PC_CLEANER", "PC_CLEANER\PC_CLEANER.pyproj", "{A75AC1F8-B2A1-4344-BA6E-42AEF146064C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A75AC1F8-B2A1-4344-BA6E-42AEF146064C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A75AC1F8-B2A1-4344-BA6E-42AEF146064C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2C89837-931E-4136-99CE-6057FE670986}
+	EndGlobalSection
+EndGlobal
