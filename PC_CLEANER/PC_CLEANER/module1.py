@@ -2,7 +2,7 @@ from __future__ import print_function
 import os
 import string
 from ctypes import windll
-import time
+from time import *
 
 fileDic = {}
 dirDic = {}
@@ -53,10 +53,8 @@ def MakeList(dirname):
            try:
                name = dirname + "/" + x                    
                if  not os.path.isdir(name):
-                   filelist.append(name)
-                   #checksize += os.stat(name).st_size
-                   #checklist.append(name)
-                   #print name,convert_bytes(os.stat(name).st_size) 
+                   if name not in filelist:                       
+                       filelist.append(name)
                tmplist.append(name)
            
            except WindowsError:
@@ -88,27 +86,20 @@ def AddToData(name):
         if(isdir):
             if len(os.listdir(name)) != 0:              
                 mainlist.append(MakeList(name))
-                #dirDic[name]= size
-                #else:
-                    #isdir[name] = 0
-
         else:
-            filelist.append(name)
-        #else:
-        #    #fileDic[name] = size
-        #    if name not in checklist:
-        #        checklist.append(name)
-        #        checksize += os.stat(name).st_size 
+            if name not in filelist:
+                filelist.append(name)
+ 
     except WindowsError:
         ''
-        #print 'WindowError'
+
 for dr in drives:
 
     if (os.path.exists(dr)):
 
         if 'G:/' in dr:
             continue
-        if 'D:/' in dr:
+        if 'C:/' in dr:
             continue
         if 'E:/' in dr:
             continue
@@ -128,7 +119,7 @@ childindexstart = 1
 
      
 for item in mainlist:
-   # print item[parentindex]
+    #print(item[parentindex])
     for a in range(childindexstart,len(item)):
         AddToData(item[a])
         #print(str(convert_bytes(checksize)),end="\n")
@@ -142,17 +133,16 @@ for item in mainlist:
 
 print("Data Added Sir....")
 
-#for item in mainlist:
-#    for a in range(childindexstart,len(item)):            
-#        if not os.path.isdir(item[a]):
-#           checksize += os.stat(item[a]).st_size
+try:
+    for item in filelist:             
+    #if not os.path.isdir(item):
+        if(os.path.exists(item)):
+            print(name,"   ",convert_bytes(os.stat(item).st_size))
+            checksize += os.stat(item).st_size
+except WindowsError:
+    ''
 
-
-#for item in mainlist:
-#    print item[parentindex],' :- \n'
-#    for a in range(childindexstart,len(item)): 
-#        print item[a],'  ',convert_bytes(os.stat(item[a]).st_size)
-
-#print convert_bytes(checksize)
+print(convert_bytes(checksize))
+sleep(10)
 
 
