@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Check_No_Of_Videos.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="module2.py">
       <SubType>Code</SubType>
     </Compile>

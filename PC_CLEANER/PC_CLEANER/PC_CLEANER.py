@@ -20,7 +20,7 @@ def get_drives():
         bitmask >>= 1
 
     return drives
-
+ 
 if __name__ == '__main__':
     temp = get_drives()
     for a in temp:
@@ -95,13 +95,14 @@ def AddToData(name):
     except WindowsError:
         ''
         #print 'WindowError'
+startTime = time.time()
 for dr in drives:
 
     if (os.path.exists(dr)):
 
         if 'G:/' in dr:
             continue
-        if 'D:/' in dr:
+        if 'C:/' in dr:
             continue
         if 'E:/' in dr:
             continue
@@ -121,10 +122,10 @@ childindexstart = 1
 
      
 for item in mainlist:
-   # print item[parentindex]
+    print(item[parentindex])
     for a in range(childindexstart,len(item)):
         AddToData(item[a])
-        print(str(convert_bytes(checksize)),end="\n")
+        #print(str(convert_bytes(checksize)),end="\n")
         #print("\b",end="")
         #if os.path.isdir(item[a]):
             #AddToData(item[a])
@@ -132,8 +133,7 @@ for item in mainlist:
        # else:
           #  checksize += os.stat(item[a]).st_size
           #  checklist = item[a]
-
-
+print((time.time() - startTime)/60,"min")
 #try:
 #    for item in mainlist:
 #        for a in range(childindexstart,len(item)):            
