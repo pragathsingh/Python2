@@ -21,6 +21,8 @@ images = 0
 vidoesize = 0
 imagesize = 0
 foldersize = []
+files = 0
+folders = 0
 
 tmpvar = 0
 parentindex = 0
@@ -42,41 +44,30 @@ def convert_bytes(num):
 
 
 def MakeList(dirname,a):
-    global checklist
-    global videos
-    global videosList
-    global images
-    global imagesList
-    global imagesize
-    global vidoesize
+    global checklist,videos,videosList,images,imagesList,imagesize,vidoesize,files,folders
     
     tmplist = []
     name = ""
+
     try:        
        tmplist = [dirname]
        tmplist.append(a)
        for x in os.listdir(dirname):
-           try:
-               name = dirname + "/" + x                    
-               if  not os.path.isdir(name):
-                   if x not in videosList:
-                       if(name.endswith(".mp4") or name.endswith(".avi") or name.endswith(".flv") or name.endswith(".mov") or name.endswith(".wmv")):
-                           checklist.append(name)
-                           #foldersize.append([a,os.stat(name).st_size])
-                           videosList.append(a)
-                           videos +=1
-                           vidoesize += os.stat(name).st_size
-                   if name not in imagesList:
-                       if(name.endswith(".png") or name.endswith(".jpg") or name.endswith(".jpeg") ):
-                          # foldersize.append([a,os.stat(name).st_size])
-                           images += 1
-                           imagesList.append(a)
-                           imagesize += os.stat(name).st_size
-                   #print name,convert_bytes(os.stat(name).st_size) 
-               tmplist.append(name)
            
-           except WindowsError:
-               notAccessable.append(name)             
+           name = dirname + "/" + x                    
+           if  not os.path.isdir(name):
+               
+               if(name.endswith(".mp4") or name.endswith(".avi") or name.endswith(".flv") or name.endswith(".mov") or name.endswith(".wmv")):
+                   videos +=1
+                   videosList.append(a)
+                   vidoesize += os.stat(name).st_size
+               
+               if(name.endswith(".png") or name.endswith(".jpg") or name.endswith(".jpeg") ):
+                   images += 1
+                   imagesList.append(a)
+                   imagesize += os.stat(name).st_size
+
+               tmplist.append(name)                     
 
     except WindowsError:
         notAccessable.append(name)
@@ -85,38 +76,25 @@ def MakeList(dirname,a):
 
 
 def AddToData(name,a):
-    global videos
-    global videosList
-    global images
-    global imagesList
-    global SizeDic
-    global checklist 
-    global mainlist
-    global checksize
-    global vidoesize
-    global imagesize
+    
+    global videos,videosList,images,imagesList,SizeDic,checklist ,mainlist,checksize,vidoesize,imagesize,files,folders
     try:
         isdir = os.path.isdir(name)        
         if(isdir):
+            folders += 1
             if len(os.listdir(name)) != 0:              
                 mainlist.append(MakeList(name,a))  
-        else:
-            if name not in checklist:
-                checklist.append(name)
-                if name not in videosList:
-                    if(name.endswith(".mp4") or name.endswith(".avi") or name.endswith(".flv") or name.endswith(".mov") or name.endswith(".wmv")):
-                        #foldersize.[a,os.stat(name).st_size])
-                        videos += 1
-                        vidoesize += os.stat(name).st_size
-                        videosList.append(a)
-                        
-                if name not in imagesList:
-                    if(name.endswith(".png") or name.endswith(".jpg") or name.endswith(".jpeg") ):
-                        #foldersize.append([a,os.stat(name).st_size])
-                        imagesize += os.stat(name).st_size
-                        print(a,convert_bytes(os.stat(name).st_size))
-                        images += 1
-                        imagesList.append(a)
+        else:        
+            files += 1
+            if(name.endswith(".mp4") or name.endswith(".avi") or name.endswith(".flv") or name.endswith(".mov") or name.endswith(".wmv")):
+                videos += 1
+                videosList.append(a)
+                vidoesize += os.stat(name).st_size                
+            
+            if(name.endswith(".png") or name.endswith(".jpg") or name.endswith(".jpeg") ):
+                images += 1
+                imagesList.append(a)
+                imagesize += os.stat(name).st_size
     except WindowsError:
         ''
 
@@ -139,6 +117,7 @@ def get_drives():
 
 def IsInSkipList(name):
     global skiplist
+
     for skip in skiplist:
         if name == skip:
             return True
@@ -146,51 +125,37 @@ def IsInSkipList(name):
 
 
 def StartAgain():
-    global mainlist
-    global parentindex
-    global childindexstart
-    for item in mainlist:          
-        if(IsInSkipList(item[1])):
-            continue
+    global mainlist,parentindex,childindexstart
+    print('Start Again Called....')
+    for item in mainlist:  
         print(item[parentindex])
         for a in range(childindexstart,len(item)):
-            if(IsInSkipList(item[a])):        
-                continue
             AddToData(item[a],item[1])
 
 
 
 def StartCalculating(dr):
     if(dr == 'All'):
+        print("Calculating Started....")
         for n in drives:
             print(n)
-            if (os.path.exists(n)):
-                print(n)
+            if (os.path.exists(n)):                
                 for a in os.listdir(n):            
-                    #lb2.config(text=videos)
                     name = n + a
                     try:
-                        if(CheckInList(name)):
-                            AddToData(name,a)
+                        AddToData(name,a)
                     except WindowsError:
-                        notAccessable.append(name)
-                    except KeyError:
-                        ''
-            StartAgain()
+                        notAccessable.append(name)                    
+                StartAgain()
     else:       
-        print(dr)
         if (os.path.exists(dr)):
-            print(dr)
-            for a in os.listdir(dr):            
-                #lb2.config(text=videos)
+            print(dr)            
+            for a in os.listdir(dr):     
                 name = dr + a
                 try:
-                    if(CheckInList(name)):
-                        AddToData(name,a)
+                    AddToData(name,a)
                 except WindowsError:
-                    notAccessable.append(name)
-                except KeyError:
-                    ''
+                    notAccessable.append(name)       
             StartAgain()
        
 
@@ -199,8 +164,6 @@ if __name__ == '__main__':
     for a in temp:
         drives.append(a + ':/')
 
-
-    d = ""
     root = Tk()
     root.title("Tk dropdown example")
      
@@ -219,6 +182,7 @@ if __name__ == '__main__':
     
     lb1 = Label(mainframe,text="Videos : ")
     lb2 = Label(mainframe,text="")
+
     ComboBoxValues = []
     ComboBoxValues.append('All')
     for a in drives:
@@ -234,26 +198,6 @@ if __name__ == '__main__':
     lb2.grid(row=1,column=2)
     root.mainloop()
     
-def AddToTotalSpace(size):
-    global checksize
-    checksize += size    
-
-def PrintIt():
-    global videosList
-    for a in videosList:print(a)
-    print('Total .mp4 format videos in the pc are '+str(videos))
-
-
-
-def FolderSize():
-    global mainlist
-    global foldersize
-
-    for a in mainlist:
-        dir = a[0]
-        name = a[1]
-
-
 for a in videosList:print(a)
 for a in imagesList:print(a)
 print('Total .mp4 format videos in the pc are '+str(videos),' and there size is'+str(convert_bytes(vidoesize)) )
