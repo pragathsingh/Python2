@@ -9,7 +9,7 @@ from tkinter.ttk import *
 
 notAccessable = []
 drives = []
-foldersize = {}
+foldersize = []
 mainlist = []
 imagesList = []
 videosList = []
@@ -52,7 +52,7 @@ def MakeList(dirname,a):
     return tmplist
 
 
-def AddToData(dirname,name,a):
+def AddToData(name,a):
     
     global videos,videosList,images,imagesList,mainlist,vidoesize,imagesize,files,folders,filesize,notAccessable
     try:
@@ -64,7 +64,6 @@ def AddToData(dirname,name,a):
         else:        
             files += 1
             filesize += os.stat(name).st_size
-            foldersize[dirname] += os.stat(name).st_size
             if(name.endswith(".mp4") or name.endswith(".avi") or name.endswith(".flv") or name.endswith(".mov") or name.endswith(".wmv")):
                 videos += 1
                 videosList.append(a)
@@ -99,17 +98,12 @@ def Print():
         print(str(count)+'. '+a)
         count += 1   
 
-def DefiningFolderSize():
-    for a in foldersize:
-        for b in foldersize:
-
-
 def StartAgain():
     global mainlist,parentindex,childindexstart
   
     for item in mainlist:  
         for a in range(childindexstart,len(item)):
-            AddToData(item[parentindex],item[a],item[1])
+            AddToData(item[a],item[1])
     
     Print()
 
@@ -125,7 +119,7 @@ def StartCalculating(dr):
                 for a in os.listdir(n):            
                     name = n + a
                     try:
-                        AddToData(n,name,a)
+                        AddToData(name,a)
                     except WindowsError:
                         notAccessable.append(name)
                         if(os.path.isdir(name)):
@@ -137,7 +131,7 @@ def StartCalculating(dr):
             for a in os.listdir(dr):     
                 name = dr + a
                 try:
-                    AddToData(dr,name,a)
+                    AddToData(name,a)
                 except WindowsError:
                     notAccessable.append(name) 
                     if(os.path.isdir(name)):
@@ -186,6 +180,7 @@ if __name__ == '__main__':
 
 
     
+
 
 
 

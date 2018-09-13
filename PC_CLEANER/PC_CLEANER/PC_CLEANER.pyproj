@@ -34,6 +34,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PC_CLEANER.py" />
+    <Compile Include="PC_CLEANER_MODIFIED.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ProcessKilling.py">
       <SubType>Code</SubType>
     </Compile>
