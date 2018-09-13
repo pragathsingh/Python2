@@ -31,6 +31,15 @@ skiplist = ["Autodesk","Local","Anaconda2","Windows","Microsoft","ProgramData"
                 ,"Program Files","Program Files (x86)","Epic Games","AppData","GAMES"
                 ,"Setups","UNREAL","UNREAL","UNREAL","UNREAL","Installed Games"]
 
+def convert_bytes(num):
+    """
+    this function will convert bytes to MB.... GB... etc
+    """
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+        if num < 1024.0:
+            return "%0.03f %s " % (num, x)
+        num /= 1024.0
+
 
 def MakeList(dirname,a):
     global checklist
@@ -54,15 +63,15 @@ def MakeList(dirname,a):
                        if(name.endswith(".mp4") or name.endswith(".avi") or name.endswith(".flv") or name.endswith(".mov") or name.endswith(".wmv")):
                            checklist.append(name)
                            #foldersize.append([a,os.stat(name).st_size])
-                           videosList.append(name)
+                           videosList.append(a)
                            videos +=1
-                           vidoesize += os.stat(a).st_size
+                           vidoesize += os.stat(name).st_size
                    if name not in imagesList:
                        if(name.endswith(".png") or name.endswith(".jpg") or name.endswith(".jpeg") ):
                           # foldersize.append([a,os.stat(name).st_size])
-                           imagesize += os.stat(name).st_size
                            images += 1
-                           imagesList.append(name)
+                           imagesList.append(a)
+                           imagesize += os.stat(name).st_size
                    #print name,convert_bytes(os.stat(name).st_size) 
                tmplist.append(name)
            
@@ -99,14 +108,15 @@ def AddToData(name,a):
                         #foldersize.[a,os.stat(name).st_size])
                         videos += 1
                         vidoesize += os.stat(name).st_size
-                        videosList.append(name)
+                        videosList.append(a)
+                        
                 if name not in imagesList:
                     if(name.endswith(".png") or name.endswith(".jpg") or name.endswith(".jpeg") ):
                         #foldersize.append([a,os.stat(name).st_size])
                         imagesize += os.stat(name).st_size
                         print(a,convert_bytes(os.stat(name).st_size))
                         images += 1
-                        imagesList.append(name)
+                        imagesList.append(a)
     except WindowsError:
         ''
 
@@ -151,22 +161,39 @@ def StartAgain():
 
 
 def StartCalculating(dr):
-       
-    print(dr)
-    if (os.path.exists(dr)):
+    if(dr == 'All'):
+        for n in drives:
+            print(n)
+            if (os.path.exists(n)):
+                print(n)
+                for a in os.listdir(n):            
+                    #lb2.config(text=videos)
+                    name = n + a
+                    try:
+                        if(CheckInList(name)):
+                            AddToData(name,a)
+                    except WindowsError:
+                        notAccessable.append(name)
+                    except KeyError:
+                        ''
+            StartAgain()
+    else:       
         print(dr)
-        for a in os.listdir(dr):            
-            #lb2.config(text=videos)
-            name = dr + a
-            try:
-                if(CheckInList(name)):
-                    AddToData(name,a)
-            except WindowsError:
-                notAccessable.append(name)
-            except KeyError:
-                ''
-        StartAgain()         
-m = 0
+        if (os.path.exists(dr)):
+            print(dr)
+            for a in os.listdir(dr):            
+                #lb2.config(text=videos)
+                name = dr + a
+                try:
+                    if(CheckInList(name)):
+                        AddToData(name,a)
+                except WindowsError:
+                    notAccessable.append(name)
+                except KeyError:
+                    ''
+            StartAgain()
+       
+
 if __name__ == '__main__':
     temp = get_drives()
     for a in temp:
@@ -184,15 +211,21 @@ if __name__ == '__main__':
     mainframe.columnconfigure(0, weight = 1)
     mainframe.rowconfigure(0, weight = 1)
     mainframe.pack(pady = 100, padx = 100)
-          
+
+    SingleDrive = True
     # on change dropdown value
-    def test():
+    def test():        
         StartCalculating(cb1.get())
     
     lb1 = Label(mainframe,text="Videos : ")
     lb2 = Label(mainframe,text="")
+    ComboBoxValues = []
+    ComboBoxValues.append('All')
+    for a in drives:
+        ComboBoxValues.append(a)
 
-    cb1 = Combobox(mainframe,values=drives,state="readonly")
+    cb1 = Combobox(mainframe,values=ComboBoxValues,state="readonly")
+    cb1.current(0)
     # link function to change dropdown        
     bt1 = Button(mainframe,text="Find Videos and Images",command=test)
     cb1.grid(row=3,column=1) 
@@ -210,14 +243,7 @@ def PrintIt():
     for a in videosList:print(a)
     print('Total .mp4 format videos in the pc are '+str(videos))
 
-def convert_bytes(num):
-    """
-    this function will convert bytes to MB.... GB... etc
-    """
-    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
-        if num < 1024.0:
-            return "%0.03f %s " % (num, x)
-        num /= 1024.0
+
 
 def FolderSize():
     global mainlist

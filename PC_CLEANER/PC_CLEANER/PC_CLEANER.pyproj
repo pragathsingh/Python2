@@ -21,13 +21,25 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Buttons.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Check_No_Of_Videos.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="kinter.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="module2.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PC_CLEANER.py" />
+    <Compile Include="ProcessKilling.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="testing_video_calculator.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
