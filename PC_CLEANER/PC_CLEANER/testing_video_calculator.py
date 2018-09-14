@@ -15,6 +15,8 @@ imagesList = []
 videosList = []
 newdir = {}
 filesize = 0
+AllFiles = []
+filesSize = {}
 
 videos = 0
 images = 0
@@ -39,6 +41,15 @@ def convert_bytes(num):
             return "%0.03f %s " % (num, x)
         num /= 1024.0
 
+def get_drives():
+    drives = []
+    bitmask = windll.kernel32.GetLogicalDrives()
+    for letter in string.uppercase:
+        if bitmask & 1:
+            drives.append(letter)
+        bitmask >>= 1
+
+    return drives
 
 def MakeList(dirname,a):
     global checklist,videos,videosList,images,imagesList,imagesize,vidoesize,files,folders    
@@ -51,7 +62,6 @@ def MakeList(dirname,a):
 
     return tmplist
 
-
 def AddToData(dirname,name,a):
     
     global videos,videosList,images,imagesList,mainlist,vidoesize,imagesize,files,folders,filesize,notAccessable
@@ -59,35 +69,41 @@ def AddToData(dirname,name,a):
         isdir = os.path.isdir(name)        
         if(isdir):
             folders += 1
+            #If the Key is aldearly in newdir then add the size otherwise add the key with the size
             if len(os.listdir(name)) != 0:              
                 mainlist.append(MakeList(name,a))  
+                if(dirname not in newdir):
+                    newdir.update({dirname:0})
+
+            elif(dirname not in newdir):
+                newdir.update({dirname:0})
+
         else:        
             files += 1
-            filesize += os.stat(name).st_size
-            foldersize[dirname] += os.stat(name).st_size
+            size = os.stat(name).st_size
+            filesize += size
+            filesSize.update({dirname:size})
+            #If the Key is  in newdir then add the size otherwise add the key with the size
+            if(dirname not in newdir):
+                newdir.update({dirname:size})
+            if(dirname in newdir):
+                newdir[dirname] += size
+
             if(name.endswith(".mp4") or name.endswith(".avi") or name.endswith(".flv") or name.endswith(".mov") or name.endswith(".wmv")):
                 videos += 1
                 videosList.append(a)
-                vidoesize += os.stat(name).st_size                
+                vidoesize += size               
             
             if(name.endswith(".png") or name.endswith(".jpg") or name.endswith(".jpeg") ):
                 images += 1
                 imagesList.append(a)
-                imagesize += os.stat(name).st_size
+                imagesize += size
     except WindowsError:
         notAccessable.append(name) 
         if(os.path.isdir(name)):
             folders += 1
 
-def get_drives():
-    drives = []
-    bitmask = windll.kernel32.GetLogicalDrives()
-    for letter in string.uppercase:
-        if bitmask & 1:
-            drives.append(letter)
-        bitmask >>= 1
 
-    return drives
 
 def Print():
     print('Total .mp4 format videos in the pc are '+str(videos),' and there size is '+str(convert_bytes(vidoesize)) )
@@ -97,11 +113,45 @@ def Print():
     count = 1
     for a in notAccessable:
         print(str(count)+'. '+a)
-        count += 1   
+        count += 1  
+        
+    print('Folders with size : \n\n')
+    count = 1
+    mycheck = 0
+    for fold in newdir:
+        mycheck += newdir[fold]
+        parrchild = fold.split('/')
+        name = parrchild[len(parrchild)-1]
+        print(str(count)+'. ' + name +' \t\t\tsize is ' + str(convert_bytes(newdir[fold])))
+        count += 1
+    print(convert_bytes(mycheck))
 
-def DefiningFolderSize():
-    for a in foldersize:
-        for b in foldersize:
+
+    #for fold in newdir:
+    #    dirname = str(fold)
+    #    
+    #    
+    #    count += 1
+
+    
+def FindFoldersSize():
+    
+    for fold in newdir:
+        dirname = str(fold)        
+        parrchild = dirname.split('/')
+        parrent = ""
+        count = 0
+        for a in range(0,len(parrchild)-1):
+            if(count==0):
+                parrent +=  parrchild[a]
+            if(count != 0):
+                parrent += ('/' + parrchild[a])
+            count += 1
+        try:
+            newdir[parrent] += newdir[fold]
+        except KeyError:
+            print('sorry this ' +dirname+' was not founded ')
+ 
 
 
 def StartAgain():
@@ -110,7 +160,7 @@ def StartAgain():
     for item in mainlist:  
         for a in range(childindexstart,len(item)):
             AddToData(item[parentindex],item[a],item[1])
-    
+    FindFoldersSize()
     Print()
 
 
@@ -175,7 +225,7 @@ if __name__ == '__main__':
         ComboBoxValues.append(a)
 
     cb1 = Combobox(mainframe,values=ComboBoxValues,state="readonly")
-    cb1.current(0)
+    cb1.current(5)
     # link function to change dropdown        
     bt1 = Button(mainframe,text="Find Videos and Images",command=test)
     cb1.grid(row=3,column=1) 
