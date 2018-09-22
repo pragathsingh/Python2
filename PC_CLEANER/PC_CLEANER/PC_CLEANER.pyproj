@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a75ac1f8-b2a1-4344-ba6e-42aef146064c</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Using_OpenCv.py</StartupFile>
+    <StartupFile>FilesFinder.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,6 +25,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Check_No_Of_Videos.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FilesFinder.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="kinter.py">

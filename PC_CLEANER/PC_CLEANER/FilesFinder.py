@@ -1,3 +1,4 @@
+
 from __future__ import print_function
 import os
 import string
@@ -142,9 +143,8 @@ def Print():
     tDur = 0.0
     for a in allisone:
         print(a,' : ',convert_bytes(allisone[a]),'\n')
-
-    for vid in videosList:
-        tDur += FindTime.VideoDuration(vid)
+    #for vid in videosList:
+    #    tDur += FindTime.VideoDuration(vid)
 
     ask = raw_input('find any folder : ')
         
