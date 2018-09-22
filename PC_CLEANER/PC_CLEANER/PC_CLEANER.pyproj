@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a75ac1f8-b2a1-4344-ba6e-42aef146064c</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PC_CLEANER.py</StartupFile>
+    <StartupFile>Using_OpenCv.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -44,6 +44,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="testing_video_calculator_BackUp.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Using_OpenCv.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

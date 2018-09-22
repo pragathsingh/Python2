@@ -5,6 +5,7 @@ from ctypes import windll
 from threading import Thread 
 from tkinter import *
 from tkinter.ttk import *
+import FindTime
 
 
 notAccessable = []
@@ -16,7 +17,8 @@ videosList = []
 newdir = {}
 filesize = 0
 AllFiles = []
-filesSize = {}
+filesSize = []
+familyLine = []
 
 videos = 0
 images = 0
@@ -51,6 +53,20 @@ def get_drives():
 
     return drives
 
+def FamilyTree(parent,size,filename):
+    global familyLine
+    fmly = parent.split("/")
+    propernames = []
+    for a in range(0 , len(fmly)):
+        name = ""
+        if(a != len(fmly)-1):
+            for b in range(0,a+1):            
+                name += fmly[b] + '/'    
+                #rint(name)
+            propernames.append(name)
+    
+    familyLine.append([filename,size,propernames])
+
 def MakeList(dirname,a):
     global checklist,videos,videosList,images,imagesList,imagesize,vidoesize,files,folders    
     tmplist = []
@@ -82,7 +98,8 @@ def AddToData(dirname,name,a):
             files += 1
             size = os.stat(name).st_size
             filesize += size
-            filesSize.update({dirname:size})
+            FamilyTree(name,size,a)
+           # filesSize.update({dirname:size})
             #If the Key is  in newdir then add the size otherwise add the key with the size
             if(dirname not in newdir):
                 newdir.update({dirname:size})
@@ -91,21 +108,22 @@ def AddToData(dirname,name,a):
 
             if(name.endswith(".mp4") or name.endswith(".avi") or name.endswith(".flv") or name.endswith(".mov") or name.endswith(".wmv")):
                 videos += 1
-                videosList.append(a)
+                videosList.append(name)
                 vidoesize += size               
             
             if(name.endswith(".png") or name.endswith(".jpg") or name.endswith(".jpeg") ):
                 images += 1
-                imagesList.append(a)
+                imagesList.append(name)
                 imagesize += size
     except WindowsError:
         notAccessable.append(name) 
         if(os.path.isdir(name)):
             folders += 1
 
-
+allisone = {}
 
 def Print():
+    global familyLine
     print('Total .mp4 format videos in the pc are '+str(videos),' and there size is '+str(convert_bytes(vidoesize)) )
     print('Total images in the pc are '+str(images),' and there size is '+str(convert_bytes(imagesize)))
     print('Total files are '+str(files)+' and folders are '+str(folders)+' of size '+str(convert_bytes(filesize))+'\n\n')
@@ -118,22 +136,36 @@ def Print():
     print('Folders with size : \n\n')
     count = 1
     mycheck = 0
-    for fold in newdir:
-        mycheck += newdir[fold]
-        parrchild = fold.split('/')
-        name = parrchild[len(parrchild)-1]
-        print(str(count)+'. ' + name +' \t\t\tsize is ' + str(convert_bytes(newdir[fold])))
-        count += 1
+
+    FolderSize()
+
+    tDur = 0.0
+    for a in allisone:
+        print(a,' : ',convert_bytes(allisone[a]),'\n')
+    #for vid in videosList:
+    #    tDur += FindTime.VideoDuration(vid)
+
+    ask = raw_input('find any folder : ')
+        
+    print('Duration of all videos in minutes is ',int(tDur / 60),'min')
+
+    if( ask in allisone):
+        print(convert_bytes(allisone[ask]))
+    else:
+        print('srry')
     print(convert_bytes(mycheck))
 
 
-    #for fold in newdir:
-    #    dirname = str(fold)
-    #    
-    #    
-    #    count += 1
 
-    
+def FolderSize():
+    global familyLine
+    for a in familyLine:        
+        for b in a[2]:
+            if(b not in allisone):
+                allisone[b] = a[1]
+            else:
+                allisone[b] += a[1]
+
 def FindFoldersSize():
     
     for fold in newdir:
@@ -162,8 +194,6 @@ def StartAgain():
             AddToData(item[parentindex],item[a],item[1])
     FindFoldersSize()
     Print()
-
-
 
 def StartCalculating(dr):
     global files,folders
@@ -196,6 +226,7 @@ def StartCalculating(dr):
        
 
 if __name__ == '__main__':
+    os.system("@echo off")
     temp = get_drives()
     for a in temp:
         drives.append(a + ':/')
