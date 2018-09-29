@@ -52,6 +52,12 @@
     <Compile Include="ProcessKilling.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="showdata.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="test.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="testing_scirpt.py">
       <SubType>Code</SubType>
     </Compile>

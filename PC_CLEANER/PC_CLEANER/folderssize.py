@@ -2,11 +2,14 @@ def FamilyTree(parent):
     
     propernames = []
     fmly = parent.split("/")
-    for a in range(0 , len(fmly)):
+    for a in range(0,len(fmly) ):
         name = ""
         if(a != len(fmly)-1):
-            for b in range(0,a+1):            
-                name += fmly[b] + '/'                    
+            for b in range(0,a+1):        
+                if(b == a+1):
+                    name += fmly[b]
+                else:
+                    name += fmly[b] + '/'                    
             propernames.append(name)
     return (propernames)
 
@@ -28,5 +31,3 @@ def FindFolderSize(files):
                 folders[dir] += values[0]
 
     return folders
-
-

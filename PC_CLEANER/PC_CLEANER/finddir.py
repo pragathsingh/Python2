@@ -26,9 +26,9 @@ def IterateThroughList(alldir, dirname,files):
             else:
                 files.append(dirname)
     except TypeError:
-        print('Type Error')
+        ''
     except WindowsError:
-        print("Window Error")
+        ''
     return alldir,files
 
 def test(dirname):
@@ -46,5 +46,5 @@ def test(dirname):
         allinone[a[0]] = [a[index] for index in range(1,len(a) )]
 
     return allinone,files
-    print('Done Calculating')
+
 
