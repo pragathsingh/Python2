@@ -27,7 +27,13 @@
     <Compile Include="Check_No_Of_Videos.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="convert.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="FilesFinder.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="finddir.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="kinter.py">
