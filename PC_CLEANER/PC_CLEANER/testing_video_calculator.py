@@ -65,7 +65,6 @@ def FamilyTree(parent,size,filename):
     familyLine.append([filename,size,propernames])
 
 def MakeList(dirname,a):
-    global checklist,videos,videosList,images,imagesList,imagesize,vidoesize,files,folders    
     tmplist = []
     
     tmplist = [dirname]

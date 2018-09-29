@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a75ac1f8-b2a1-4344-ba6e-42aef146064c</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>FilesFinder.py</StartupFile>
+    <StartupFile>testing_scirpt.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -36,6 +36,9 @@
     <Compile Include="finddir.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="folderssize.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="kinter.py">
       <SubType>Code</SubType>
     </Compile>
@@ -47,6 +50,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ProcessKilling.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="testing_scirpt.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="testing_video_calculator.py">
